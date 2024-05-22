@@ -98,3 +98,57 @@ The program is organized into the following main sections:
     ebreak
     ```
 ![Quicksort](https://github.com/Uvthk/phoeniX/blob/main/images/quicksort.png)
+
+### Integer Square Root Algorithm in RISC-V Assembly
+
+#### Overview
+
+This repository contains a RISC-V assembly implementation of an algorithm to calculate the integer square root of a given non-negative integer. The integer square root of a number \( n \) is the largest integer \( x \) such that \( x^2 \leq n \).
+
+#### Algorithm Description
+
+The algorithm implemented is a simple iterative method to find the integer square root. It works by incrementing a counter and checking its square against the input number until the square exceeds the input number. The counter is then decremented to provide the correct integer square root.
+
+#### Assembly Code
+
+The provided RISC-V assembly code for calculating the integer square root is as follows:
+
+```assembly
+li a0, 13    # a = 13
+li t0, 0     # j = 0
+
+LOOP:
+mul t1, t0, t0      # i = j*j
+bgt t1, a0, DONE    # if(i > a)
+addi t0, t0, 1      # j++
+beq x0, x0, LOOP    # back to the LOOP
+DONE:
+addi t0, t0, -1     # it is the answer
+ebreak
+```
+
+##### Explanation
+
+1. **Initialization**:
+    - `li a0, 13`: Load the integer 13 into register `a0`. This is the input number for which we want to find the integer square root.
+    - `li t0, 0`: Initialize register `t0` to 0. This will be used as our counter (`j`).
+
+2. **Main Loop** (`LOOP`):
+    - `mul t1, t0, t0`: Calculate the square of `t0` and store it in `t1`.
+    - `bgt t1, a0, DONE`: If the square (`t1`) is greater than the input number (`a0`), jump to the `DONE` label.
+    - `addi t0, t0, 1`: Increment the counter (`t0`) by 1.
+    - `beq x0, x0, LOOP`: Unconditionally jump back to the `LOOP` label to repeat the process.
+
+3. **Completion** (`DONE`):
+    - `addi t0, t0, -1`: Decrement the counter (`t0`) by 1, as the last increment made the square exceed the input number.
+    - `ebreak`: End the program execution.
+
+##### Usage
+
+To run this code, you need a RISC-V simulator or a RISC-V compatible processor. The input number can be modified by changing the value loaded into `a0`.
+
+##### Example
+
+For the given code, the input number is 13. The integer square root of 13 is 3, since \( 3^2 = 9 \) and \( 4^2 = 16 \) which exceeds 13.
+
+![Int_sqrt](https://github.com/Uvthk/phoeniX/blob/main/images/int_sqrt.png)
