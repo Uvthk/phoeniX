@@ -1,34 +1,22 @@
-# A function that implements the quicksort algorithm.
-# Running time complexity:  amortised O(nlogn), worst case: O(n^2)
-# Running space complexity: O(nlogn), worst case: O(n)
-#
-# quicksort(int arr[], int start, int end)
-# Requires: 'start' >= 0
-#           'end' < length(arr)
-
-# MAIN
 addi sp, sp, 1000
-# Store array values in contiguous memory at mem address 0x0:
-# {10, 80, 30, 90, 40, 50, 70}
- addi a0, x0, 0
+li a0, 0
+li s10, -1
+li s11, 5
 
- addi t0, x0, 10
- sw t0, 0(a0) 
- addi t0, x0, 80
- sw t0, 4(a0)
- addi t0, x0, 30
- sw t0, 8(a0)
- addi t0, x0, 90
- sw t0, 12(a0)
- addi t0, x0, 40
- sw t0, 16(a0)
- addi t0, x0, 50
- sw t0, 20(a0)
- addi t0, x0, 70
- sw t0, 24(a0)
+#init arr[] to memory
+li	a5, 5
+sw	a5, 0(a0)
+li	a5, 4
+sw	a5, 4(a0)
+li	a5, 3
+sw	a5, 8(a0)
+li	a5, 2
+sw	a5, 12(a0)
+li	a5, 1
+sw	a5, 16(a0)
 
-addi a1, x0, 0 # start
-addi a2, x0, 6 # end
+li a1, 0 # start
+li a2, 4 # end
 
 jal ra, QUICKSORT
 jal ra, EXIT
@@ -44,11 +32,13 @@ sw s0, 0(sp)
 addi s0, a0, 0
 addi s1, a1, 0
 addi s2, a2, 0
-BLT a2, a1, START_GT_END
+BLE a2, a1, START_GT_END
+BEQ a2, s10, START_GT_END
+BEQ a1, s11, START_GT_END
 
 jal ra, PARTITION
 
-addi s3, a0, 0   # pi
+srli s3, a5, 2
 
 addi a0, s0, 0
 addi a1, s1, 0
@@ -75,9 +65,9 @@ addi sp, sp, -4
 sw ra, 0(sp)
 
 slli t0, a2, 2   # end * sizeof(int)
-add t0, t0, a0  
+add t0, t0, a0
+addi a5, t0, 0   # a5 = &pivot  
 lw t0, 0(t0)     # pivot = arr[end]
-addi t1, a1, -1  # i = (start - 1)
 
 addi t2, a1, 0   # j = start
 LOOP:
@@ -87,40 +77,32 @@ slli t3, t2, 2   # j * sizeof(int)
 add a6, t3, a0   # (arr + j)
 lw t3, 0(a6)     # arr[j]
 
-addi t0, t0, 1   # pivot + 1
-BLT t0, t3, CURR_ELEMENT_GTE_PIVOT  # if (pivot <= arr[j])
-addi t1, t1, 1   # i++
+BGT t0, t3, PIVOT_GT_CURR_ELEMENT  # if (pivot > arr[j])
+BLT a5, a6, BACK_TO_LOOP           # if (&pivot < &arr[j])
 
-slli t5, t1, 2   # i * sizeof(int)
-add a7, t5, a0   # (arr + i)
-lw t5, 0(a7)     # arr[i]
+SWAP:
+addi a7, a5, 0   # temp = &pivot
+addi a5, a6, 0
+addi a6, a7, 0
+sw t0, 0(a5)
+sw t3, 0(a6)     # swap(&pivot, &arr[j])
+beq x0,x0, BACK_TO_LOOP
 
-sw t5, 0(a6)
-sw t3, 0(a7)     # swap(&arr[i], &arr[j])
-
-CURR_ELEMENT_GTE_PIVOT:
+PIVOT_GT_CURR_ELEMENT:
+BLT a5, a6, SWAP # if(&pivot < &arr[j])
+BACK_TO_LOOP:
 addi t2, t2, 1   # j++
 beq x0, x0, LOOP
+
 LOOP_DONE:
-
-addi t5, t1, 1   # i + 1
-addi a5, t5, 0   # Save for return value.
-slli t5, t5, 2   # (i + 1) * sizeof(int)
-add a7, t5, a0   # (arr + (i + 1))
-lw t5, 0(a7)     # arr[i + 1]
-
-slli t3, a2, 2   # end * sizeof(int)
-add a6, t3, a0   # (arr + end)
-lw t3, 0(a6)     # arr[end]
-
-sw t5, 0(a6)
-sw t3, 0(a7)     # swap(&arr[i + 1], &arr[end])
-
-addi a0, a5, 0   # return i + 1
-
 lw ra, 0(sp)
 addi sp, sp, 4
 jalr x0, ra, 0
 
 EXIT:
+lw	x21,0(a0)
+lw	x22,4(a0)
+lw	x23,8(a0)
+lw	x24,12(a0)
+lw	x25,16(a0)
 ebreak
