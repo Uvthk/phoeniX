@@ -4,7 +4,7 @@ Computer Organization - Spring 2024
 ## Assignment 1: Assembly code execution on phoeniX RISC-V core
 
 - Name: mohammad erfan mahtabi
-- Team Members: fatemeh ackbari & seyed mohammad reza hedayati
+- Team Members: fatemeh ackbari, mohammad erfan mahtabi, seyed mohammad reza hedayati
 - Student ID: 99413154
 - Date: 2024/05/22
 
