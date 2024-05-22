@@ -97,4 +97,4 @@ The program is organized into the following main sections:
     lw x25,16(a0)
     ebreak
     ```
-![Quicksort](https://github.com/Uvthk/phoeniX/main/images/quicksort.png)
+![Quicksort](https://github.com/Uvthk/phoeniX/blob/main/images/quicksort.png)
