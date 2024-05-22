@@ -97,5 +97,4 @@ The program is organized into the following main sections:
     lw x25,16(a0)
     ebreak
     ```
-
-- Attach the waveform image to the README.md file
+![Quicksort](https://github.com/Uvthk/phoeniX/main/images/quicksort.png)
